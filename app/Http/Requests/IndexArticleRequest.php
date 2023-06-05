@@ -4,8 +4,9 @@ namespace App\Http\Requests;
 
 use Illuminate\Contracts\Validation\ValidationRule;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
 
-class DestroyArticleRequest extends FormRequest
+class IndexArticleRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -22,9 +23,10 @@ class DestroyArticleRequest extends FormRequest
      */
     public function rules(): array
     {
+        $languages = config('languages');
         return [
-            'articles' => 'required|array',
-            'articles.*' => 'exists:articles,id'
+            'language' => ['required', Rule::in($languages)],
+            'per_page' => 'nullable|integer'
         ];
     }
 }
