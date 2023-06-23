@@ -16,7 +16,7 @@ class ArticleResource extends JsonResource
     {
         return [
             'id' => $this->id,
-            'translations' => ArticleTranslationResource::collection($this->translations)
+            'translations' => ArticleTranslationResource::collection($this->translations),
         ];
     }
 }

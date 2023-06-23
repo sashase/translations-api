@@ -24,7 +24,7 @@ class DestroyArticleRequest extends FormRequest
     {
         return [
             'articles' => 'required|array',
-            'articles.*' => 'exists:articles,id'
+            'articles.*' => 'exists:articles,id',
         ];
     }
 }

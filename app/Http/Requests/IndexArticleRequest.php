@@ -24,9 +24,10 @@ class IndexArticleRequest extends FormRequest
     public function rules(): array
     {
         $languages = config('languages');
+
         return [
             'language' => ['required', Rule::in($languages)],
-            'per_page' => 'nullable|integer'
+            'per_page' => 'nullable|integer',
         ];
     }
 }

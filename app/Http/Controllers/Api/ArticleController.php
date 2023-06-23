@@ -19,9 +19,6 @@ class ArticleController extends Controller
 {
     /**
      * Display a listing of the resource.
-     *
-     * @param IndexArticleRequest $request
-     * @return AnonymousResourceCollection
      */
     public function index(IndexArticleRequest $request): AnonymousResourceCollection
     {
@@ -39,15 +36,12 @@ class ArticleController extends Controller
 
     /**
      * Store a newly created resource in storage.
-     *
-     * @param StoreArticleRequest $request
-     * @return ArticleResource
      */
     public function store(StoreArticleRequest $request): ArticleResource
     {
         $translationsData = $request->validated('translations', []);
 
-        return DB::transaction(function () use ($request, $translationsData) {
+        return DB::transaction(function () use ($translationsData) {
             $article = Article::create();
 
             foreach ($translationsData as $translationData) {
@@ -60,9 +54,6 @@ class ArticleController extends Controller
 
     /**
      * Display the specified resource.
-     *
-     * @param string $id
-     * @return ArticleResource
      */
     public function show(string $id): ArticleResource
     {
@@ -71,15 +62,12 @@ class ArticleController extends Controller
 
     /**
      * Update the specified resource in storage.
-     *
-     * @param UpdateArticleRequest $request
-     * @param string $id
-     * @return ArticleResource
      */
     public function update(UpdateArticleRequest $request, string $id): ArticleResource
     {
         $article = Article::findOrFail($id);
-        return DB::transaction(function () use ($request, $article, $id) {
+
+        return DB::transaction(function () use ($request, $article) {
 
             foreach ($request->validated('translations') as $translationData) {
                 $languageCode = $translationData['language_code'];
@@ -101,13 +89,11 @@ class ArticleController extends Controller
 
     /**
      * Remove the specified resource from storage.
-     *
-     * @param DestroyArticleRequest $request
-     * @return JsonResponse
      */
     public function destroy(DestroyArticleRequest $request): JsonResponse
     {
         $articles = $request->validated('articles', []);
+
         return DB::transaction(function () use ($articles) {
 
             ArticleTranslation::whereIn('article_id', $articles)->delete();

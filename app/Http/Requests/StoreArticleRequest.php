@@ -29,10 +29,11 @@ class StoreArticleRequest extends FormRequest
         $languageCodes = $this->input('translations.*.language_code');
         $titleRule = new UniqueTitle;
         $titleRule->setData($languageCodes);
+
         return [
             'translations' => 'required|array|min:3',
             'translations.*.title' => [
-                'required', 'max:255', $titleRule
+                'required', 'max:255', $titleRule,
             ],
             'translations.*.text' => 'required',
             'translations.*.language_code' => ['required', Rule::in($languages), 'distinct'],
